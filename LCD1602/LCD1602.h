@@ -54,21 +54,21 @@ void LCDInit(void);			                            //Initializes LCD
 
 //Not yet implemented
 void LCDSendChar(uint8_t);		                        //forms data ready to send to 74HC164
-void LCDsendCommand(uint8_t);	                        //forms data ready to send to 74HC164
-void LCDclr(void);				                        //Clears LCD
-void LCDhome(void);			                            //LCD cursor home
-void LCDstring(uint8_t*, uint8_t);	                    //Outputs string to LCD
-void LCDGotoXY(uint8_t, uint8_t);	                    //Cursor to X Y position
-void CopyStringtoLCD(const uint8_t*, uint8_t, uint8_t); //copies flash string to LCD at x,y
-void LCDdefinechar(const uint8_t *,uint8_t);            //write char to LCD CGRAM 
-void LCDshiftRight(uint8_t);	                        //shift by n characters Right
-void LCDshiftLeft(uint8_t);	                            //shift by n characters Left
-void LCDcursorOn(void);		                            //Underline cursor ON
-void LCDcursorOnBlink(void);	                        //Underline blinking cursor ON
-void LCDcursorOFF(void);		                        //Cursor OFF
-void LCDblank(void);		 	                        //LCD blank but not cleared
-void LCDvisible(void);			                        //LCD visible
-void LCDcursorLeft(uint8_t);	                        //Shift cursor left by n
-void LCDcursorRight(uint8_t);	                        //shif cursor right by n
+void LCDSendCommand(uint8_t);	                        //forms data ready to send to 74HC164
+void LCDClr(void);				                        //Clears LCD
+void LCDHome(void);			                            //LCD cursor home
+void LCDString(uint8_t*, uint8_t);	                    //Outputs string to LCD
+void LCDGoToXY(uint8_t, uint8_t);	                    //Cursor to X Y position
+void CopyStringToLCD(const uint8_t*, uint8_t, uint8_t); //copies flash string to LCD at x,y
+void LCDDefineChar(const uint8_t *,uint8_t);            //write char to LCD CGRAM 
+void LCDShiftRight(uint8_t);	                        //shift by n characters Right
+void LCDShiftLeft(uint8_t);	                            //shift by n characters Left
+void LCDCursorOn(void);		                            //Underline cursor ON
+void LCDCursorOnBlink(void);	                        //Underline blinking cursor ON
+void LCDCursorOff(void);		                        //Cursor OFF
+void LCDBlank(void);		 	                        //LCD blank but not cleared
+void LCDVisible(void);			                        //LCD visible
+void LCDCursorLeft(uint8_t);	                        //Shift cursor left by n
+void LCDCursorRight(uint8_t);	                        //shif cursor right by n
 
 #endif //LCD1602_H

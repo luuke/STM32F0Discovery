@@ -10,6 +10,13 @@
 #define LCD_D7_PIN	6	
 */
 
+void SetPins(uint8_t pins)
+{
+	// Usefull only for 4-bit mode
+	// Pins value: | - | RS | RW | E | DB7 | DB6 | DB5 | DB4 |
+	
+}
+
 void LCDInit(void)
 {
 	Delay_ms(100);
@@ -182,10 +189,7 @@ void LCDInit(void)
 void LCDSendChar(uint8_t ch)
 {
 	//4 MSB bits
-	GPIOC->BSRR |= GPIO_BSRR_BR_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BR_8
-					|	GPIO_BSRR_BR_9;
+	GPIOC->BSRR |= GPIO_BSRR_BR_6 | GPIO_BSRR_BR_7 | GPIO_BSRR_BR_8 | GPIO_BSRR_BR_9;
 	GPIOC->ODR |= (((ch>>4)&0x01)<<9)
 					|	(((ch>>5)&0x01)<<8)
 					|	(((ch>>6)&0x01)<<7)
@@ -212,3 +216,174 @@ void LCDSendChar(uint8_t ch)
 					|	GPIO_BSRR_BR_12;		
 	Delay_ms(1);		
 }
+
+void LCDSendCommand(uint8_t cmd)
+{
+		//4 MSB bits
+	GPIOC->BSRR |= GPIO_BSRR_BR_6 | GPIO_BSRR_BR_7 | GPIO_BSRR_BR_8 | GPIO_BSRR_BR_9;
+	GPIOC->ODR |= (((cmd>>4)&0x01)<<9)
+					|	(((cmd>>5)&0x01)<<8)
+					|	(((cmd>>6)&0x01)<<7)
+					|	(((cmd>>7)&0x01)<<6);
+	GPIOC->BSRR |= GPIO_BSRR_BS_10;	
+	Delay_ms(1);
+	GPIOC->BSRR |= GPIO_BSRR_BR_10;	
+	Delay_ms(1);		
+	//4 LSB bits
+	GPIOC->BSRR |= GPIO_BSRR_BR_6
+					|	GPIO_BSRR_BR_7
+					|	GPIO_BSRR_BR_8
+					|	GPIO_BSRR_BR_9;
+	GPIOC->ODR |= (((cmd)&0x01)<<9)
+					|	(((cmd>>1)&0x01)<<8)
+					|	(((cmd>>2)&0x01)<<7)
+					|	(((cmd>>3)&0x01)<<6);
+	GPIOC->BSRR |= GPIO_BSRR_BS_10;	
+	Delay_ms(1);
+	GPIOC->BSRR |= GPIO_BSRR_BR_10;	
+	Delay_ms(1);	
+}
+
+void LCDClear(void)
+{
+	LCDSendCommand(0x01);
+}
+
+void LCDHome(void)
+{
+	LCDSendCommand(0x02);
+}
+
+void LCDString(uint8_t* data, uint8_t nBytes)	
+{
+	register uint8_t i;
+
+	// check to make sure we have a good pointer
+	if (!data) return;
+
+	// print data
+	for(i=0; i<nBytes; i++)
+	{
+		LCDSendChar(data[i]);
+	}
+}
+
+void LCDGoToXY(uint8_t x, uint8_t y)	
+{
+#define LCD_DDRAM               7	//set DD RAM address
+
+#define LCD_LINE0_DDRAMADDR		0x00
+#define LCD_LINE1_DDRAMADDR		0x40
+#define LCD_LINE2_DDRAMADDR		0x14
+#define LCD_LINE3_DDRAMADDR		0x54
+
+	register uint8_t DDRAMAddr;
+	// remap lines into proper order
+	switch(y)
+	{
+	case 0:  DDRAMAddr = LCD_LINE0_DDRAMADDR + x; break;
+	case 1:  DDRAMAddr = LCD_LINE1_DDRAMADDR + x; break;
+	case 2:  DDRAMAddr = LCD_LINE2_DDRAMADDR + x; break;
+	case 3:  DDRAMAddr = LCD_LINE3_DDRAMADDR + x; break;
+	default: DDRAMAddr = LCD_LINE0_DDRAMADDR + x;
+	}
+	// set data address
+	LCDSendCommand(1<<LCD_DDRAM | DDRAMAddr);	
+} 
+
+void LCDShiftLeft(uint8_t n)	
+{
+	uint8_t i;
+
+	for (i=0;i<n;i++)
+	{
+		LCDSendCommand(0x1E);
+	}
+}
+
+void LCDShiftRight(uint8_t n)	
+{
+uint8_t i;
+
+	for (i=0;i<n;i++)
+	{
+		LCDSendCommand(0x18);
+	}
+}
+
+//displays LCD cursor
+void LCDCursorOn(void) 
+{
+	LCDSendCommand(0x0E);
+}
+
+//displays LCD blinking cursor
+void LCDCursorOnBlink(void)	
+{
+	LCDSendCommand(0x0F);
+}
+
+//Turns OFF cursor
+void LCDCursorOff(void)	
+{
+	LCDSendCommand(0x0C);
+}
+
+//Blanks LCD
+void LCDBlank(void)		
+{
+	LCDSendCommand(0x08);
+}
+
+//Shows LCD
+void LCDVisible(void)		
+{
+	LCDSendCommand(0x0C);
+}
+
+//Moves cursor by n poisitions left
+void LCDCursorLeft(uint8_t n)	
+{
+	uint8_t i;
+
+	for (i=0;i<n;i++)
+	{
+		LCDSendCommand(0x10);
+	}
+}
+
+//Moves cursor by n poisitions left
+void LCDCursorRight(uint8_t n)	
+{
+	uint8_t i;
+
+	for (i=0;i<n;i++)
+	{
+		LCDSendCommand(0x14);
+	}
+}
+
+//Copies string from flash memory to LCD at x y position
+//void CopyStringToLCD(const uint8_t *FlashLoc, uint8_t x, uint8_t y)
+//{
+//	uint8_t i;
+//	LCDGotoXY(x,y);
+//	for(i=0;(uint8_t)pgm_read_byte(&FlashLoc[i]);i++)
+//	{
+//		LCDSendChar((uint8_t)pgm_read_byte(&FlashLoc[i]));
+//	}
+//}
+
+//defines char symbol in CGRAM
+//void LCDdefinechar(const uint8_t *pc, uint8_t code)
+//{
+//	uint8_t a;
+//	uint16_t i;
+//	a=(code<<3)|0x40;
+//	for (i=0; i<8; i++){
+//		LCDsendCommand(a++);
+//		LCDsendChar((uint8_t)pgm_read_byte(&pc[i]));
+//		}
+//}
+
+	
