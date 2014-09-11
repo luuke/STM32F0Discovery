@@ -26,13 +26,6 @@ void LCDInit(void)
 {
 	Delay_ms(100);
 	ResetPins(LCD_RS | LCD_RW | LCD_E | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
-	//GPIOC->BSRR |= GPIO_BSRR_BR_6
-	//				|	GPIO_BSRR_BR_7
-	//				|	GPIO_BSRR_BR_8
-	//				|	GPIO_BSRR_BR_9
-	//				|	GPIO_BSRR_BR_10
-	//				|	GPIO_BSRR_BR_11
-	//				|	GPIO_BSRR_BR_12;
 	GPIOC->MODER |= GPIO_MODER_MODER6_0
 					|	 GPIO_MODER_MODER7_0
 					|	 GPIO_MODER_MODER8_0
@@ -61,114 +54,70 @@ void LCDInit(void)
 	Delay_ms(1);
 	
 	//--------- Enable Four Bit Mode ----------
-	GPIOC->BSRR |= GPIO_BSRR_BR_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BS_8
-					|	GPIO_BSRR_BR_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D7 | LCD_D6 | LCD_D4);
+	SetPins(LCD_E | LCD_D5);	
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);
 	
 	//---------- Set Interface Length ----------
-	GPIOC->BSRR |= GPIO_BSRR_BR_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BS_8
-					|	GPIO_BSRR_BR_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D7 | LCD_D6 | LCD_D4);
+	SetPins(LCD_E | LCD_D5);	
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BS_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BR_8
-					|	GPIO_BSRR_BR_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D6 | LCD_D5 | LCD_D4);
+	SetPins(LCD_E | LCD_D7);	
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);
 	
 	//---------- Turn off the Display ----------
-	GPIOC->BSRR |= GPIO_BSRR_BR_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BR_8
-					|	GPIO_BSRR_BR_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
+	SetPins(LCD_E);		
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BS_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BR_8
-					|	GPIO_BSRR_BR_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D6 | LCD_D5 | LCD_D4);
+	SetPins(LCD_E | LCD_D7);
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);
 	
 	//------------ Clear the Display -----------
-	GPIOC->BSRR |= GPIO_BSRR_BR_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BR_8
-					|	GPIO_BSRR_BR_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
+	SetPins(LCD_E);		
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BR_8
-					|	GPIO_BSRR_BS_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D7 | LCD_D6 | LCD_D5);
+	SetPins(LCD_E | LCD_D4);	
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);
 	
 	//-------- Set Cursor Move Direction --------
-	GPIOC->BSRR |= GPIO_BSRR_BR_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BR_8
-					|	GPIO_BSRR_BR_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
+	SetPins(LCD_E);		
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_6
-					|	GPIO_BSRR_BS_7
-					|	GPIO_BSRR_BS_8
-					|	GPIO_BSRR_BR_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D7 | LCD_D4);
+	SetPins(LCD_E | LCD_D6 | LCD_D5);		
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);	
 	
 	//---------- Enable Display/Cursor ----------
-	GPIOC->BSRR |= GPIO_BSRR_BR_6
-					|	GPIO_BSRR_BR_7
-					|	GPIO_BSRR_BR_8
-					|	GPIO_BSRR_BR_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
+	SetPins(LCD_E);		
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BS_6
-					|	GPIO_BSRR_BS_7
-					|	GPIO_BSRR_BS_8
-					|	GPIO_BSRR_BS_9
-					|	GPIO_BSRR_BS_10
-					|	GPIO_BSRR_BR_12;		
+	ResetPins(LCD_RS);
+	SetPins(LCD_E | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
 	Delay_ms(1);
-	GPIOC->BSRR |= GPIO_BSRR_BR_10;
+	ResetPins(LCD_E);
 	Delay_ms(1);		
 }
 
