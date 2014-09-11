@@ -168,17 +168,17 @@ void LCDHome(void)
 	LCDSendCommand(0x02);
 }
 
-void LCDString(uint8_t* data, uint8_t nBytes)	
+void LCDString(uint8_t* str, uint8_t bytes)	
 {
 	register uint8_t i;
 
 	// check to make sure we have a good pointer
-	if (!data) return;
+	if (!str) return;
 
 	// print data
-	for(i=0; i<nBytes; i++)
+	for(i = 0; i < bytes; i++)
 	{
-		LCDSendChar(data[i]);
+		LCDSendChar(str[i]);
 	}
 }
 
@@ -209,7 +209,7 @@ void LCDShiftLeft(uint8_t n)
 {
 	uint8_t i;
 
-	for (i=0;i<n;i++)
+	for (i = 0; i < n; i++)
 	{
 		LCDSendCommand(0x1E);
 	}
@@ -217,9 +217,9 @@ void LCDShiftLeft(uint8_t n)
 
 void LCDShiftRight(uint8_t n)	
 {
-uint8_t i;
+	uint8_t i;
 
-	for (i=0;i<n;i++)
+	for (i = 0; i < n; i++)
 	{
 		LCDSendCommand(0x18);
 	}
@@ -260,7 +260,7 @@ void LCDCursorLeft(uint8_t n)
 {
 	uint8_t i;
 
-	for (i=0;i<n;i++)
+	for (i = 0; i < n; i++)
 	{
 		LCDSendCommand(0x10);
 	}
@@ -271,33 +271,9 @@ void LCDCursorRight(uint8_t n)
 {
 	uint8_t i;
 
-	for (i=0;i<n;i++)
+	for (i = 0; i < n; i++)
 	{
 		LCDSendCommand(0x14);
 	}
 }
 
-//Copies string from flash memory to LCD at x y position
-//void CopyStringToLCD(const uint8_t *FlashLoc, uint8_t x, uint8_t y)
-//{
-//	uint8_t i;
-//	LCDGotoXY(x,y);
-//	for(i=0;(uint8_t)pgm_read_byte(&FlashLoc[i]);i++)
-//	{
-//		LCDSendChar((uint8_t)pgm_read_byte(&FlashLoc[i]));
-//	}
-//}
-
-//defines char symbol in CGRAM
-//void LCDdefinechar(const uint8_t *pc, uint8_t code)
-//{
-//	uint8_t a;
-//	uint16_t i;
-//	a=(code<<3)|0x40;
-//	for (i=0; i<8; i++){
-//		LCDsendCommand(a++);
-//		LCDsendChar((uint8_t)pgm_read_byte(&pc[i]));
-//		}
-//}
-
-	
