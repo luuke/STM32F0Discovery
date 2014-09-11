@@ -1,38 +1,31 @@
 #include "LCD1602.h"
 
-/*
-#define LCD_RS_PIN	12 	//define MCU pin connected to LCD RS
-#define LCD_RW_PIN	11 	//define MCU pin connected to LCD RW
-#define LCD_E_PIN		10		//define MCU pin connected to LCD E
-#define LCD_D4_PIN	9		//define MCU pin connected to LCD D3
-#define LCD_D5_PIN	8		//define MCU pin connected to LCD D4
-#define LCD_D6_PIN	7		//define MCU pin connected to LCD D5
-#define LCD_D7_PIN	6	
-*/
-
 void SetPins(uint16_t pins)
 {
-	// Usefull only for 4-bit mode
-	// Pins value: | - | RS | RW | E | DB7 | DB6 | DB5 | DB4 |
-	GPIOC->ODR |= pins;
+	GPIO_ODR |= pins;
 }
 
 void ResetPins(uint16_t pins)
 {
-	GPIOC->ODR &= ~pins;
+	GPIO_ODR &= ~pins;
+}
+
+void SetPinsToOutputMode()
+{
+	GPIO_MODER |= (1 << (2 * LCD_RS_PIN)) 
+					| (1 << (2 * LCD_RW_PIN)) 
+					| (1 << (2 * LCD_E_PIN)) 
+					| (1 << (2 * LCD_D7_PIN)) 
+					| (1 << (2 * LCD_D6_PIN)) 
+					| (1 << (2 * LCD_D5_PIN)) 
+					| (1 << (2 * LCD_D4_PIN));
 }
 
 void LCDInit(void)
 {
 	Delay_ms(100);
 	ResetPins(LCD_RS | LCD_RW | LCD_E | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
-	GPIOC->MODER |= GPIO_MODER_MODER6_0
-					|	 GPIO_MODER_MODER7_0
-					|	 GPIO_MODER_MODER8_0
-					|	 GPIO_MODER_MODER9_0
-					|	 GPIO_MODER_MODER10_0
-					|	 GPIO_MODER_MODER11_0
-					|	 GPIO_MODER_MODER12_0;
+	SetPinsToOutputMode();
 	SetPins(LCD_RS | LCD_E | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
 	
 	//--------- Write 0x03 -----------
@@ -126,14 +119,14 @@ void LCDSendChar(uint8_t ch)
 	//4 MSB bits
 	ResetPins(LCD_RS | LCD_E | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
 	SetPins(LCD_RS);	
-	GPIOC->ODR |= (((ch>>4)&0x01)<<LCD_D4_PIN) | (((ch>>5)&0x01)<<LCD_D5_PIN) | (((ch>>6)&0x01)<<LCD_D6_PIN) | (((ch>>7)&0x01)<<LCD_D7_PIN);	
+	SetPins((((ch>>7)&0x01)*LCD_D7) | (((ch>>6)&0x01)*LCD_D6) | (((ch>>5)&0x01)*LCD_D5) | ((ch>>4)&0x01)*LCD_D4);
 	SetPins(LCD_E);
 	Delay_ms(1);
 	ResetPins(LCD_E);
 	Delay_ms(1);		
 	//4 LSB bits
 	ResetPins(LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
-	GPIOC->ODR |= (((ch)&0x01)<<9) | (((ch>>1)&0x01)<<8) | (((ch>>2)&0x01)<<7) | (((ch>>3)&0x01)<<6);
+	SetPins((((ch>>3)&0x01)*LCD_D7) | (((ch>>2)&0x01)*LCD_D6) | (((ch>>1)&0x01)*LCD_D5) | ((ch)&0x01)*LCD_D4);
 	SetPins(LCD_E);	
 	Delay_ms(1);
 	ResetPins(LCD_E);	
@@ -144,14 +137,14 @@ void LCDSendCommand(uint8_t cmd)
 {
 	//4 MSB bits
 	ResetPins(LCD_RS | LCD_E | LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
-	GPIOC->ODR |= (((cmd>>4)&0x01)<<LCD_D4_PIN) | (((cmd>>5)&0x01)<<LCD_D5_PIN) | (((cmd>>6)&0x01)<<LCD_D6_PIN) | (((cmd>>7)&0x01)<<LCD_D7_PIN);	
+	SetPins((((cmd>>7)&0x01)*LCD_D7) | (((cmd>>6)&0x01)*LCD_D6) | (((cmd>>5)&0x01)*LCD_D5) | ((cmd>>4)&0x01)*LCD_D4);
 	SetPins(LCD_E);
 	Delay_ms(1);
 	ResetPins(LCD_E);
 	Delay_ms(1);		
 	//4 LSB bits
 	ResetPins(LCD_D7 | LCD_D6 | LCD_D5 | LCD_D4);
-	GPIOC->ODR |= (((cmd)&0x01)<<9) | (((cmd>>1)&0x01)<<8) | (((cmd>>2)&0x01)<<7) | (((cmd>>3)&0x01)<<6);
+	SetPins((((cmd>>3)&0x01)*LCD_D7) | (((cmd>>2)&0x01)*LCD_D6) | (((cmd>>1)&0x01)*LCD_D5) | ((cmd)&0x01)*LCD_D4);
 	SetPins(LCD_E);	
 	Delay_ms(1);
 	ResetPins(LCD_E);	

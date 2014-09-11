@@ -24,57 +24,44 @@
 #include "stm32f0xx.h"
 #include "../Delay/Delay.h"
 
-#define LCD_RS_PORT	GPIOC 	//define MCU pin connected to LCD RS
-#define LCD_RS_PIN	12 	//define MCU pin connected to LCD RS
-#define LCD_RS	(1<<LCD_RS_PIN) 	//define MCU pin connected to LCD RS
+#define GPIO_PORT		GPIOC
+#define GPIO_ODR 		GPIO_PORT->ODR
+#define GPIO_MODER 	GPIO_PORT->MODER
 
-#define LCD_RW_PORT	GPIOC 	//define MCU pin connected to LCD RW
-#define LCD_RW_PIN	11 	//define MCU pin connected to LCD RW
-#define LCD_RW	(1<<LCD_RW_PIN) 	//define MCU pin connected to LCD RS
-
-#define LCD_E_PORT	GPIOC	//define MCU pin connected to LCD E
-#define LCD_E_PIN	10	//define MCU pin connected to LCD E
-#define LCD_E	(1<<LCD_E_PIN) 	//define MCU pin connected to LCD RS
-
-#define LCD_D4_PORT	GPIOC	//define MCU pin connected to LCD D3
-#define LCD_D4_PIN	9	//define MCU pin connected to LCD D3
-#define LCD_D4	(1<<LCD_D4_PIN) 	//define MCU pin connected to LCD RS
-#define LCD_D5_PORT	GPIOC	//define MCU pin connected to LCD D4
-#define LCD_D5_PIN	8	//define MCU pin connected to LCD D4
-#define LCD_D5	(1<<LCD_D5_PIN) 	//define MCU pin connected to LCD RS
-#define LCD_D6_PORT	GPIOC	//define MCU pin connected to LCD D5
-#define LCD_D6_PIN	7	//define MCU pin connected to LCD D5
-#define LCD_D6	(1<<LCD_D6_PIN) 	//define MCU pin connected to LCD RS
-#define LCD_D7_PORT	GPIOC	//define MCU pin connected to LCD D6
-#define LCD_D7_PIN	6	//define MCU pin connected to LCD D6
-#define LCD_D7	(1<<LCD_D7_PIN) 	//define MCU pin connected to LCD RS
-
-#define LDPORT GPIOC	//define MCU port connected to LCD data pins
-#define LCPORT GPIOC	//define MCU port connected to LCD control pins
-#define LDMODER GPIOC->MODER	//define MCU direction register for port connected to LCD data pins
-#define LCMODER GPIOC->MODER	//define MCU direction register for port connected to LCD control pins
-
+#define LCD_RS_PIN			12
+#define LCD_RS			(1 << LCD_RS_PIN)
+#define LCD_RW_PIN			11
+#define LCD_RW			(1 << LCD_RW_PIN)
+#define LCD_E_PIN				10
+#define LCD_E			(1 << LCD_E_PIN)
+#define LCD_D4_PIN			9
+#define LCD_D4			(1 << LCD_D4_PIN)
+#define LCD_D5_PIN			8
+#define LCD_D5			(1 << LCD_D5_PIN) 
+#define LCD_D6_PIN			7
+#define LCD_D6			(1 << LCD_D6_PIN)
+#define LCD_D7_PIN			6
+#define LCD_D7			(1 << LCD_D7_PIN)
 
 void SetPins(uint16_t pins);
 void ResetPins(uint16_t pins);
 
-void LCDInit(void);			                            //Initializes LCD
-void LCDSendChar(uint8_t ch);		                        //forms data ready to send to 74HC164
-void LCDSendCommand(uint8_t cmd);	                        //forms data ready to send to 74HC164
-void LCDClear(void);				                        //Clears LCD
-void LCDHome(void);			                            //LCD cursor home
-void LCDString(uint8_t* str, uint8_t bytes);	                    //Outputs string to LCD
-void LCDGoToXY(uint8_t x, uint8_t y);	                    //Cursor to X Y position
-void CopyStringToLCD(const uint8_t*, uint8_t, uint8_t); //copies flash string to LCD at x,y
-void LCDDefineChar(const uint8_t *,uint8_t);            //write char to LCD CGRAM 
-void LCDShiftRight(uint8_t n);	                        //shift by n characters Right
-void LCDShiftLeft(uint8_t n);	                            //shift by n characters Left
-void LCDCursorOn(void);		                            //Underline cursor ON
-void LCDCursorOnBlink(void);	                        //Underline blinking cursor ON
-void LCDCursorOff(void);		                        //Cursor OFF
-void LCDBlank(void);		 	                        //LCD blank but not cleared
-void LCDVisible(void);			                        //LCD visible
-void LCDCursorLeft(uint8_t n);	                        //Shift cursor left by n
-void LCDCursorRight(uint8_t n);	                        //shif cursor right by n
+void LCDSendChar(uint8_t ch);
+void LCDSendCommand(uint8_t cmd);
+void LCDInit(void);
+void LCDClear(void);
+void LCDHome(void);
+void LCDString(uint8_t* str, uint8_t bytes);
+void LCDGoToXY(uint8_t x, uint8_t y);
+void LCDDefineChar(const uint8_t *,uint8_t);
+void LCDShiftRight(uint8_t n);
+void LCDShiftLeft(uint8_t n);
+void LCDCursorOn(void);
+void LCDCursorOnBlink(void);
+void LCDCursorOff(void);
+void LCDBlank(void);
+void LCDVisible(void);
+void LCDCursorLeft(uint8_t n);
+void LCDCursorRight(uint8_t n);
 
 #endif //LCD1602_H
