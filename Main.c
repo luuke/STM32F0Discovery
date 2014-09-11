@@ -12,16 +12,11 @@ int main()
 {
 	GPIOInit();
 	LCDInit();
-	//LCDCursorOff();
-	LCDGoToXY(8,1);
-	LCDSendChar('A');
-	Delay_ms(200);
-	LCDVisible();
+	LCDHome();
+	LCDString("TEMP:26,7*C",11);
+	LCDGoToXY(0,1);
+	LCDString("HUM:79%",7);
 	while(1)
 	{
-		LCDShiftLeft(1);
-		Delay_ms(1000);
-		LCDSendChar('A');
-		Delay_ms(125);
 	}
 }

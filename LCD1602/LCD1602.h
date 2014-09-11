@@ -26,21 +26,28 @@
 
 #define LCD_RS_PORT	GPIOC 	//define MCU pin connected to LCD RS
 #define LCD_RS_PIN	12 	//define MCU pin connected to LCD RS
+#define LCD_RS	(1<<LCD_RS_PIN) 	//define MCU pin connected to LCD RS
 
 #define LCD_RW_PORT	GPIOC 	//define MCU pin connected to LCD RW
 #define LCD_RW_PIN	11 	//define MCU pin connected to LCD RW
+#define LCD_RW	(1<<LCD_RW_PIN) 	//define MCU pin connected to LCD RS
 
 #define LCD_E_PORT	GPIOC	//define MCU pin connected to LCD E
 #define LCD_E_PIN	10	//define MCU pin connected to LCD E
+#define LCD_E	(1<<LCD_E_PIN) 	//define MCU pin connected to LCD RS
 
 #define LCD_D4_PORT	GPIOC	//define MCU pin connected to LCD D3
 #define LCD_D4_PIN	9	//define MCU pin connected to LCD D3
+#define LCD_D4	(1<<LCD_D4_PIN) 	//define MCU pin connected to LCD RS
 #define LCD_D5_PORT	GPIOC	//define MCU pin connected to LCD D4
 #define LCD_D5_PIN	8	//define MCU pin connected to LCD D4
+#define LCD_D5	(1<<LCD_D5_PIN) 	//define MCU pin connected to LCD RS
 #define LCD_D6_PORT	GPIOC	//define MCU pin connected to LCD D5
 #define LCD_D6_PIN	7	//define MCU pin connected to LCD D5
+#define LCD_D6	(1<<LCD_D6_PIN) 	//define MCU pin connected to LCD RS
 #define LCD_D7_PORT	GPIOC	//define MCU pin connected to LCD D6
 #define LCD_D7_PIN	6	//define MCU pin connected to LCD D6
+#define LCD_D7	(1<<LCD_D7_PIN) 	//define MCU pin connected to LCD RS
 
 #define LDPORT GPIOC	//define MCU port connected to LCD data pins
 #define LCPORT GPIOC	//define MCU port connected to LCD control pins
